@@ -11,4 +11,4 @@ group :development do
   gem "rspec", "~> 3.0"
 end
 
-gem 'sqlite3', "> 1.3"
+gem 'sqlite3', "~> 1.3"
