@@ -2,6 +2,10 @@
 kj is a simple rubygem for accessing the King James Bible.  It uses an embedded sqlite data store.
 
 ___
+###Install
+```ruby
+gem install kj
+```
 ##Usage
 ###Create
 ```ruby
