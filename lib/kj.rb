@@ -1,6 +1,6 @@
 require "sqlite3"
-require_relative 'kj/db'
-require_relative 'kj/book'
+require 'kj/db'
+require 'kj/book'
 
 module Kj
 
