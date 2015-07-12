@@ -1,13 +1,15 @@
 require 'csv'
 require "sqlite3"
+require "pathname"
 
-db = SQLite3::Database.new(File.join(File.dirname(__FILE__), 'lib/kj/kjb.db'))
+path = Pathname(File.absolute_path(__FILE__))
+db = SQLite3::Database.new(File.join(path.parent.parent.to_s, 'db/kjb.db'))
 db.results_as_hash = true
 db.execute "Delete from books"
 db.execute "Delete from chapters"
 db.execute "Delete from verses"
 db.execute "DELETE FROM SQLITE_SEQUENCE WHERE name='books' OR name='chapters' OR name='verses'"
-csv_text = File.read('books.csv')
+csv_text = File.read(File.join(path.parent.to_s, 'books.csv'))
 csv = CSV.parse(csv_text)
 csv.each do |row| # build books table
   book_name = row[0]
@@ -18,7 +20,7 @@ csv.each do |row| # build books table
 end
 
 current_book_id, current_book_name, current_chapter_id, current_chapter_number = nil, nil, nil, nil # import chapters, verses
-File.readlines('kjb.txt').each do |line| #obtained from https://getbible.net/Bibles
+File.readlines(File.join(path.parent.to_s, 'kjb.txt')).each do |line| #obtained from https://getbible.net/Bibles
   parts = line.split('||')
   book_name = parts[0]
   chapter_number = parts[1].to_i
