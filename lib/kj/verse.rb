@@ -2,7 +2,7 @@ module Kj
 
   class Verse
 
-    attr_reader :id, :book_name, :chapter_id, :chapter_number, :number, :text
+    attr_reader :id, :book_name, :chapter_id, :chapter_number, :number
 
     def initialize(args)
       args.each do |k,v|
