@@ -21,7 +21,6 @@ module Kj
     def text
       @text ||= begin
         verse = Db.query("SELECT chapter_id, text FROM verses WHERE id = ?", [@id], true)
-        @chapter_id = verse['chapter_id']
         verse['text']
       end
     end
