@@ -13,8 +13,11 @@ describe "Kj" do
       expect(verse.title).to eq("Genesis 1:1")
     end
 
-    it '#text' do
-      expect(verse.text).to eq("In the beginning God created the heaven and the earth." )
+    describe '#text' do
+      it 'returns the verse text' do
+        expect(bible.book(:gen).chapter(1).verse(1).text).to eq("In the beginning God created the heaven and the earth." )
+        expect(bible.book(:gen).chapter(1).verse(2).text).to_not eq("In the beginning God created the heaven and the earth." )
+      end
     end
 
   end
