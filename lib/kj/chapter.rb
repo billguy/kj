@@ -21,8 +21,8 @@ module Kj
     end
 
     def verse(verse_number)
-      verse = Db.query("SELECT id FROM verses WHERE chapter_id = ? AND number = ?", [@id, number], true)
-      Verse.new(id: verse['id'], book_name: book_name, chapter_id: @id, chapter_number: number, number: verse_number)
+      verse = Db.query("SELECT id FROM verses WHERE chapter_id = ? AND number = ?", [@id, verse_number], true)
+      Verse.new(id: verse['id'], book_name: book_name, chapter_id: @id, chapter_number: @number, number: verse_number)
     end
 
     def verses(*numbers)
