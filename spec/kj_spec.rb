@@ -22,6 +22,24 @@ describe "Kj" do
         expect(bible.book(:genesis)).to be_kind_of(Kj::Book)
       end
     end
+
+    describe "#random_book" do
+      it 'returns a Book' do
+        expect(bible.random_book).to be_kind_of(Kj::Book)
+      end
+    end
+
+    describe "#random_chapter" do
+      it 'returns a Chapter' do
+        expect(bible.random_chapter).to be_kind_of(Kj::Chapter)
+      end
+    end
+
+    describe "#random_verse" do
+      it 'returns a Verse' do
+        expect(bible.random_verse).to be_kind_of(Kj::Verse)
+      end
+    end
   end
 
 end
