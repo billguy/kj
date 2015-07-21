@@ -1,7 +1,7 @@
-require_relative 'kj/base'
-require_relative 'kj/book'
-require_relative 'kj/chapter'
-require_relative 'kj/verse'
+require 'kj/base'
+require 'kj/book'
+require 'kj/chapter'
+require 'kj/verse'
 
 module Kj
 
