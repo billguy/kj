@@ -1,3 +1,4 @@
+require 'kj/db'
 require 'kj/base'
 require 'kj/book'
 require 'kj/chapter'
