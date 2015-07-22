@@ -1,6 +1,7 @@
 require 'csv'
 require "sqlite3"
 require "pathname"
+require_relative "parameterize"
 
 path = Pathname(File.absolute_path(__FILE__))
 db = SQLite3::Database.new(File.join(path.parent.parent.to_s, 'db/kjb.db'))
@@ -16,11 +17,11 @@ csv.each do |row| # build books table
   abbreviations = row[1].split(',').map{|abb| abb.downcase.gsub(' ', '')}
   abbreviations << book_name.downcase
   abbreviations.uniq!
-  db.execute("INSERT INTO books(name, abbreviations) VALUES (?, ?)", [book_name, abbreviations.join(',')])
+  db.execute("INSERT INTO books(name, abbreviations, permalink) VALUES (?, ?, ?)", [book_name, abbreviations.join(','), parameterize(book_name)])
 end
 
 current_book_id, current_book_name, current_chapter_id, current_chapter_number = nil, nil, nil, nil # import chapters, verses
-File.readlines(File.join(path.parent.to_s, 'kjb.txt')).each do |line| #obtained from https://getbible.net/Bibles
+File.readlines(File.join(path.parent.to_s, 'kjb.txt')).each do |line| #obtained from httpirbs://getbible.net/Bibles
   parts = line.split('||')
   book_name = parts[0]
   chapter_number = parts[1].to_i
