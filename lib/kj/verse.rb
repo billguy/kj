@@ -43,6 +43,26 @@ module Kj
       text
     end
 
+    def next
+      @next ||= begin
+        v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id > ? order by id asc limit 1", [@id], true)
+        self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
+        rescue Kj::Iniquity
+          v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [1], true)
+          self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
+      end
+    end
+
+    def prev
+      @prev ||= begin
+        v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id < ? order by id desc limit 1", [@id], true)
+        self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
+        rescue Kj::Iniquity
+          v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [self.class.count], true)
+          self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
+      end
+    end
+
     def text
       @text ||= begin
         verse = Db.query("SELECT chapter_id, text FROM verses WHERE id = ?", [@id], true)

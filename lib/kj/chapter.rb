@@ -30,6 +30,26 @@ module Kj
       title
     end
 
+    def next
+      @next ||= begin
+        c = Db.query("SELECT id, book_id, number FROM chapters WHERE id > ? order by id asc limit 1", [@id], true)
+        self.class.new(id: c['id'], book_id: c['book_id'], number: c['number'])
+        rescue Kj::Iniquity
+          c = Db.query("SELECT id, book_id, number FROM chapters WHERE id = ?", [1], true)
+          self.class.new(id: c['id'], book_id: c['book_id'], number: c['number'])
+      end
+    end
+
+    def prev
+      @prev ||= begin
+        c = Db.query("SELECT id, book_id, number FROM chapters WHERE id < ? order by id desc limit 1", [@id], true)
+        self.class.new(id: c['id'], book_id: c['book_id'], number: c['number'])
+        rescue Kj::Iniquity
+          c = Db.query("SELECT id, book_id, number FROM chapters WHERE id = ?", [self.class.count], true)
+          self.class.new(id: c['id'], book_id: c['book_id'], number: c['number'])
+      end
+    end
+
     def self.count
       1184
     end

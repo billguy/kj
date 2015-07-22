@@ -20,6 +20,18 @@ describe "Kj" do
       end
     end
 
+    describe '#prev' do
+      it 'returns the previous Verse' do
+        expect(verse.prev.number).to eq(21) # Rev 22:21
+      end
+    end
+
+    describe '#next' do
+      it 'returns the next Verse' do
+        expect(verse.next.number).to eq(2)
+      end
+    end
+
   end
 
 end

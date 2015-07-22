@@ -25,6 +25,18 @@ describe "Kj" do
       end
     end
 
+    describe '#prev' do
+      it 'returns the previous Chapter' do
+        expect(chapter.prev.number).to eq(22) # Rev 22
+      end
+    end
+
+    describe '#next' do
+      it 'returns the next Chapter' do
+        expect(chapter.next.number).to eq(2)
+      end
+    end
+
   end
 
 end

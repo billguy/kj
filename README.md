@@ -46,6 +46,8 @@ puts chapter.number
  => 1
 puts chapter.title
  => "Genesis 1"
+chapter.next # returns the next Chapter
+chapter.prev # returns the previous Chapter
 ```
 ### Verses
 All return an array of Verse objects.
@@ -62,6 +64,8 @@ puts verse.title
  => "Genesis 1:1" 
 puts verse.text
  => "In the beginning God..."
+verse.next # returns the next Verse
+verse.prev # returns the previous Verse
 ```
 ### Random
 ```ruby
