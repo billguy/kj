@@ -39,6 +39,10 @@ module Kj
       chapter.book_name
     end
 
+    def book_permalink
+      chapter.book_permalink
+    end
+
     def to_s
       text
     end

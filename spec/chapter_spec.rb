@@ -25,6 +25,10 @@ describe "Kj" do
       end
     end
 
+    it '#book_permalink' do
+      expect(chapter.book_permalink).to eq(book.permalink)
+    end
+
     describe '#prev' do
       it 'returns the previous Chapter' do
         expect(chapter.prev.number).to eq(22) # Rev 22

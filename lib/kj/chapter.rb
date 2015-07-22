@@ -17,13 +17,17 @@ module Kj
 
     def book
       @book ||= begin
-        b = Db.query("SELECT id, name FROM books WHERE id = ?", [@book_id], true)
-        Book.new(id: b['id'], name: b['name'])
+        b = Db.query("SELECT id, name, permalink FROM books WHERE id = ?", [@book_id], true)
+        Book.new(id: b['id'], name: b['name'], permalink: b['permalink'])
       end
     end
 
     def book_name
       book.name
+    end
+
+    def book_permalink
+      book.permalink
     end
 
     def to_s
