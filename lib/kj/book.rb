@@ -53,19 +53,19 @@ module Kj
     end
 
     def chapter(number)
-      chapter = Db.query("SELECT id FROM chapters WHERE book_id = ? AND number = ?", [@id, number], true)
-      Chapter.new(id: chapter['id'], book: self, number: number)
+      chapter = Db.query("SELECT id FROM chapters WHERE book_id = ? AND number = ?", [id, number], true)
+      Chapter.new(id: chapter['id'], book_id: id, number: number)
     end
 
     def chapters(*numbers)
       if numbers.empty?
         @chapters ||= begin
-          results = Db.query("SELECT id, number FROM chapters WHERE book_id = ?", [@id])
-          results.map{|chapter| Chapter.new(id: chapter['id'], book: self, number: chapter['number'])}
+          results = Db.query("SELECT id, number FROM chapters WHERE book_id = ?", [id])
+          results.map{|chapter| Chapter.new(id: chapter['id'], book_id: id, number: chapter['number'])}
         end
       else
-        results = Db.query("SELECT id, number FROM chapters WHERE book_id = #{@id} AND number IN (#{numbers.flatten.join(',')})")
-        results.map{|chapter| Chapter.new(id: chapter['id'], book: self, number: chapter['number'])}.sort!{ |a,b| a.id <=> b.id }
+        results = Db.query("SELECT id, number FROM chapters WHERE book_id = #{id} AND number IN (#{numbers.flatten.join(',')})")
+        results.map{|chapter| Chapter.new(id: chapter['id'], book_id: id, number: chapter['number'])}.sort!{ |a,b| a.id <=> b.id }
       end
     end
 

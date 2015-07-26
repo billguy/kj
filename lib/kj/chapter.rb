@@ -17,7 +17,7 @@ module Kj
 
     def book
       @book ||= begin
-        b = Db.query("SELECT id, name, permalink FROM books WHERE id = ?", [@book_id], true)
+        b = Db.query("SELECT id, name, permalink FROM books WHERE id = ?", [book_id], true)
         Book.new(id: b['id'], name: b['name'], permalink: b['permalink'])
       end
     end
@@ -36,7 +36,7 @@ module Kj
 
     def next
       @next ||= begin
-        c = Db.query("SELECT id, book_id, number FROM chapters WHERE id > ? order by id asc limit 1", [@id], true)
+        c = Db.query("SELECT id, book_id, number FROM chapters WHERE id > ? order by id asc limit 1", [id], true)
         self.class.new(id: c['id'], book_id: c['book_id'], number: c['number'])
         rescue Kj::Iniquity
           c = Db.query("SELECT id, book_id, number FROM chapters WHERE id = ?", [1], true)
@@ -46,7 +46,7 @@ module Kj
 
     def prev
       @prev ||= begin
-        c = Db.query("SELECT id, book_id, number FROM chapters WHERE id < ? order by id desc limit 1", [@id], true)
+        c = Db.query("SELECT id, book_id, number FROM chapters WHERE id < ? order by id desc limit 1", [id], true)
         self.class.new(id: c['id'], book_id: c['book_id'], number: c['number'])
         rescue Kj::Iniquity
           c = Db.query("SELECT id, book_id, number FROM chapters WHERE id = ?", [self.class.count], true)
@@ -64,19 +64,19 @@ module Kj
     end
 
     def verse(verse_number)
-      verse = Db.query("SELECT id FROM verses WHERE chapter_id = ? AND number = ?", [@id, verse_number], true)
-      Verse.new(id: verse['id'], book_name: book_name, chapter: self, number: verse_number)
+      verse = Db.query("SELECT id FROM verses WHERE chapter_id = ? AND number = ?", [id, verse_number], true)
+      Verse.new(id: verse['id'], book_name: book_name, chapter_id: id, number: verse_number)
     end
 
     def verses(*numbers)
       if numbers.empty?
         @verses ||= begin
-          results = Db.query("SELECT id, number FROM verses WHERE chapter_id = ?", [@id])
-          results.map{|verse| Verse.new(id: verse['id'], book_name: book_name, chapter: self, number: verse['number'])}
+          results = Db.query("SELECT id, number FROM verses WHERE chapter_id = ?", [id])
+          results.map{|verse| Verse.new(id: verse['id'], book_name: book_name, chapter_id: id, number: verse['number'])}
         end
       else
-        results = Db.query("SELECT id, number FROM verses WHERE chapter_id = #{@id} AND number IN (#{numbers.flatten.join(',')})")
-        results.map!{|verse| Verse.new(id: verse['id'], book_name: book_name, chapter: self, number: verse['number'])}.sort!{ |a,b| a.id <=> b.id }
+        results = Db.query("SELECT id, number FROM verses WHERE chapter_id = #{id} AND number IN (#{numbers.flatten.join(',')})")
+        results.map!{|verse| Verse.new(id: verse['id'], book_name: book_name, chapter_id: id, number: verse['number'])}.sort!{ |a,b| a.id <=> b.id }
       end
     end
 
