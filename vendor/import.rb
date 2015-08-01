@@ -21,7 +21,7 @@ csv.each do |row| # build books table
 end
 
 current_book_id, current_book_name, current_chapter_id, current_chapter_number = nil, nil, nil, nil # import chapters, verses
-File.readlines(File.join(path.parent.to_s, 'kjb.txt')).each do |line| #obtained from httpirbs://getbible.net/Bibles
+File.readlines(File.join(path.parent.to_s, 'kjb.txt')).each do |line| #obtained from https://getbible.net/Bibles
   parts = line.split('||')
   book_name = parts[0]
   chapter_number = parts[1].to_i
@@ -29,6 +29,7 @@ File.readlines(File.join(path.parent.to_s, 'kjb.txt')).each do |line| #obtained 
   verse_text = parts[3].chomp
   if current_book_name != book_name
     current_book_name = book_name
+    current_chapter_number = nil
     current_book_id = db.get_first_row("SELECT id FROM books WHERE name = ?", [book_name])['id']
   end
   if current_chapter_number != chapter_number
