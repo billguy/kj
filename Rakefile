@@ -21,6 +21,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{kj is a simple rubygem for accessing the King James Bible.  It uses an embedded sqlite data store.}
   gem.email = "djohn@arch-no.org"
   gem.authors = ["David John"]
+  gem.require_path = "lib"
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new

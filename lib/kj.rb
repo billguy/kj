@@ -1,8 +1,6 @@
-require 'kj/db'
-require 'kj/base'
-require 'kj/book'
-require 'kj/chapter'
-require 'kj/verse'
+require_relative 'kj/book'
+require_relative 'kj/chapter'
+require_relative 'kj/verse'
 
 module Kj
 
@@ -26,6 +24,10 @@ module Kj
 
     def random_verse
       Verse.random
+    end
+
+    def at(percent)
+      Verse.at(percent)
     end
 
   end

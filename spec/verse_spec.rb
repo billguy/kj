@@ -36,6 +36,18 @@ describe "Kj" do
       end
     end
 
+    describe '.percent' do
+      it 'returns gen 1:1 when given <=0' do
+        expect(Kj::Verse.percent(0).id).to eq(1)
+      end
+      it 'returns rev 22:21 when given >=1' do
+        expect(Kj::Verse.percent(1).id).to eq(Kj::Verse.count)
+      end
+      it 'returns the correct verse' do
+        expect(Kj::Verse.percent(0.5).id).to eq(15551)
+      end
+    end
+
   end
 
 end

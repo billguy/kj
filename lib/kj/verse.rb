@@ -1,6 +1,8 @@
+require_relative 'base'
+
 module Kj
 
-  class Verse
+  class Verse < Base
 
     attr_accessor :id, :chapter_id, :number
     attr_writer :chapter
@@ -21,6 +23,18 @@ module Kj
 
     def self.random
       verse = Db.query("SELECT id, chapter_id, number FROM verses WHERE id = ?", [rand(1..count)], true)
+      new(id: verse['id'], chapter_id: verse['chapter_id'], number: verse['number'])
+    end
+
+    def self.percent(decimal)
+      if decimal.round(3) <= 0
+        verse_id = 1
+      elsif decimal.round(3) >= 1
+        verse_id = count
+      else
+        verse_id = (count * decimal).round
+      end
+      verse = Db.query("SELECT id, chapter_id, number FROM verses WHERE id = ?", [verse_id], true)
       new(id: verse['id'], chapter_id: verse['chapter_id'], number: verse['number'])
     end
 
@@ -49,7 +63,7 @@ module Kj
 
     def next
       @next ||= begin
-        v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id > ? order by id asc limit 1", [id], true)
+        v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [id +  1], true)
         self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
         rescue Kj::Iniquity
           v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [1], true)
@@ -59,7 +73,7 @@ module Kj
 
     def prev
       @prev ||= begin
-        v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id < ? order by id desc limit 1", [id], true)
+        v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [id - 1], true)
         self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
         rescue Kj::Iniquity
           v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [self.class.count], true)
