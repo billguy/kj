@@ -75,6 +75,13 @@ bible.random_verse #returns a random Kj::Verse
 puts bible.random_verse.text
  => "But woe unto you, scribes and Pharisees, hypocrites! for ye shut up the kingdom of heaven against men: for ye neither go in yourselves, neither suffer ye them that are entering to go in."
 ```
+### Percentages
+```ruby
+# Locate Verse objects by their decimal percent between 0 and 1
+verse = bible.percent(0.5)
+puts verse.title
+ => "Psalms 103:1" 
+```
 ### Exceptions
 Kj will raise a Kj::Iniquity when it can't find what you're looking for.  
 ```
