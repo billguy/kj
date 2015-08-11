@@ -48,6 +48,12 @@ describe "Kj" do
       end
     end
 
+    describe '.page' do
+      it 'returns the verses for the page' do
+        expect(Kj::Verse.page(1).length).to eq(21)
+      end
+    end
+
   end
 
 end

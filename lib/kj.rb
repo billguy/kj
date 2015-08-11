@@ -30,6 +30,14 @@ module Kj
       Verse.at(percent)
     end
 
+    def page(page)
+      Verse.page(page)
+    end
+
+    def self.page_count
+      Verse.page_count
+    end
+
   end
 
 end

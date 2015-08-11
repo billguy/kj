@@ -67,6 +67,7 @@ puts verse.text
 verse.next # returns the next Verse
 verse.prev # returns the previous Verse
 ```
+## Other Stuff
 ### Random
 ```ruby
 bible.random_book #returns a random Kj::Book
@@ -81,6 +82,13 @@ puts bible.random_verse.text
 verse = bible.percent(0.5)
 puts verse.title
  => "Psalms 103:1" 
+```
+### Pages
+```ruby
+# Locate Verse objects for a particular page (1-1609)
+verses = bible.page(777)
+puts verses.first.title
+ => "Psalms 22:26" 
 ```
 ### Exceptions
 Kj will raise a Kj::Iniquity when it can't find what you're looking for.  

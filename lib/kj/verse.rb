@@ -22,8 +22,8 @@ module Kj
     end
 
     def self.random
-      verse = Db.query("SELECT id, chapter_id, number FROM verses WHERE id = ?", [rand(1..count)], true)
-      new(id: verse['id'], chapter_id: verse['chapter_id'], number: verse['number'])
+      verse = Db.query("SELECT id, chapter_id, number, page FROM verses WHERE id = ?", [rand(1..count)], true)
+      new(id: verse['id'], chapter_id: verse['chapter_id'], number: verse['number'], page: verse['page'])
     end
 
     def self.percent(decimal)
@@ -34,8 +34,17 @@ module Kj
       else
         verse_id = (count * decimal).round
       end
-      verse = Db.query("SELECT id, chapter_id, number FROM verses WHERE id = ?", [verse_id], true)
-      new(id: verse['id'], chapter_id: verse['chapter_id'], number: verse['number'])
+      verse = Db.query("SELECT id, chapter_id, number, page FROM verses WHERE id = ?", [verse_id], true)
+      new(id: verse['id'], chapter_id: verse['chapter_id'], number: verse['number'], page: verse['page'])
+    end
+
+    def self.page_count
+      1609
+    end
+
+    def self.page(page)
+      verses = Db.query("SELECT id, chapter_id, number, page FROM verses WHERE page = ?", [page])
+      verses.map{|verse| new(id: verse['id'], chapter_id: verse['chapter_id'], number: verse['number'], page: verse['page'])}
     end
 
     def chapter
@@ -63,28 +72,35 @@ module Kj
 
     def next
       @next ||= begin
-        v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [id +  1], true)
-        self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
+        v = Db.query("SELECT id, chapter_id, text, number, page FROM verses WHERE id = ?", [id +  1], true)
+        self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'], page: v['page'])
         rescue Kj::Iniquity
-          v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [1], true)
-          self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
+          v = Db.query("SELECT id, chapter_id, text, number, page FROM verses WHERE id = ?", [1], true)
+          self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'], page: v['page'])
       end
     end
 
     def prev
       @prev ||= begin
-        v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [id - 1], true)
-        self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
+        v = Db.query("SELECT id, chapter_id, text, number, page FROM verses WHERE id = ?", [id - 1], true)
+        self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'], page: v['page'])
         rescue Kj::Iniquity
-          v = Db.query("SELECT id, chapter_id, text, number FROM verses WHERE id = ?", [self.class.count], true)
-          self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'])
+          v = Db.query("SELECT id, chapter_id, text, number, page FROM verses WHERE id = ?", [self.class.count], true)
+          self.class.new(id: v['id'], chapter_id: v['chapter_id'], text: v['text'], number: v['number'], page: v['page'])
       end
     end
 
     def text
       @text ||= begin
-        verse = Db.query("SELECT chapter_id, text FROM verses WHERE id = ?", [id], true)
+        verse = Db.query("SELECT text FROM verses WHERE id = ?", [id], true)
         verse['text']
+      end
+    end
+
+    def page
+      @page ||= begin
+        verse = Db.query("SELECT page FROM verses WHERE id = ?", [id], true)
+        verse['page']
       end
     end
 
