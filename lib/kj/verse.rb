@@ -4,7 +4,7 @@ module Kj
 
   class Verse < Base
 
-    attr_accessor :id, :chapter_id, :number
+    attr_accessor :id, :chapter_id, :number, :page
     attr_writer :chapter
 
     def initialize(args)

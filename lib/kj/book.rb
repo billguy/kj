@@ -4,7 +4,7 @@ module Kj
 
   class Book < Base
 
-    attr_accessor :id, :name, :permalink
+    attr_accessor :id, :name, :permalink, :abbreviations
 
     def initialize(args)
       args.each do |k,v|
@@ -34,15 +34,15 @@ module Kj
       numbers = names_or_numbers.uniq.select{|n| n.is_a?(Integer)}
       names = (names_or_numbers - numbers).uniq.map{|name| name.to_s.downcase}
       results = []
-      results << Db.query("SELECT id, name, permalink FROM books WHERE id IN (#{numbers.join(',')})") if numbers.any?
-      names.each{ |name| results << Db.query("SELECT id, name FROM books WHERE abbreviations LIKE ? OR permalink = ?", ["%#{name.to_s}%", name.to_s]) }
-      results.flatten.map!{|book| new(id: book['id'], name: book['name'], permalink: book['permalink'])}.uniq.sort!{ |a,b| a.id <=> b.id }
+      results << Db.query("SELECT id, name, permalink, abbreviations FROM books WHERE id IN (#{numbers.join(',')})") if numbers.any?
+      names.each{ |name| results << Db.query("SELECT id, name, permalink, abbreviations FROM books WHERE abbreviations LIKE ? OR permalink = ?", ["%#{name.to_s}%", name.to_s]) }
+      results.flatten.map!{|book| new(id: book['id'], name: book['name'], permalink: book['permalink'], abbreviations: book['abbreviations'])}.uniq.sort!{ |a,b| a.id <=> b.id }
     end
 
     def self.all
       @all ||= begin
-        books = Db.query("SELECT id, name, permalink FROM books")
-        books.map{ |book| new(id: book['id'], name: book['name'], permalink: book['permalink']) }
+        books = Db.query("SELECT id, name, permalink, abbreviations FROM books")
+        books.map{ |book| new(id: book['id'], name: book['name'], permalink: book['permalink'], abbreviations: book['abbreviations']) }
       end
     end
 
